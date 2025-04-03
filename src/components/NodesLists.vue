@@ -3,7 +3,7 @@ import type { GroupType } from '@/Interfaces/groupType'
 import type { MetricType } from '@/Interfaces/metricType'
 import { useGroupStore } from '@/stores/groupStore'
 import { useMetricStore } from '@/stores/metricStore'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 const groupStore = useGroupStore()
 const metricStore = useMetricStore()
 
@@ -25,14 +25,9 @@ const latestMetrics = computed(() => {
   return metricStore.getLatestMetricsByNodes(nodeIds.value)
 })
 
-const metricsForNode = (nodeId: number): MetricType[] => {
-  return metricStore.getMetricsByNodeId(nodeId)
-}
-
-function handleNodeClick(node: GroupType, metrics: MetricType[]): void {
+function handleNodeClick(node: GroupType): void {
   groupStore.setSelectedNode(node)
   console.log('Выбранная нода:', node)
-  console.log('Метрики ноды:', metrics)
 }
 
 function getColor(metric: number): string {
@@ -49,14 +44,6 @@ watch([groupStore, metricStore], () => {
   allNodes.value = groupStore.groups
   allMetrics.value = metricStore.metrics
 })
-
-// onMounted(async () => {
-//   // await metricStore.fetchMetrics()
-//   // await groupStore.fetchGroups()
-//   allNodes.value = groupStore.groups
-//   allMetrics.value = metricStore.metrics
-//   console.log(allMetrics.value)
-// })
 </script>
 
 <template>
@@ -64,7 +51,7 @@ watch([groupStore, metricStore], () => {
     <div class="content-block-wrapper" style="overflow-y: auto; max-height: 100vh">
       <h1>Ноды</h1>
       <div class="">
-        <table>
+        <table style="width: 100%">
           <thead>
             <tr>
               <td>Статус</td>
@@ -75,14 +62,17 @@ watch([groupStore, metricStore], () => {
           <tbody>
             <tr
               v-for="(node, index) in nodes"
-              :key="index"
-              @click="handleNodeClick(node, metricsForNode(node.node_id))"
+              :key="node.node_id"
+              @click="handleNodeClick(node)"
+              :class="{
+                'selected-node': node.node_id === groupStore.selectedNode?.node_id,
+              }"
             >
               <td :style="{ color: `${node.node_status_color}` }">
                 {{ node.node_status_description }}
               </td>
               <td>{{ node.node_caption }}</td>
-              <td>
+              <td class="pr-20">
                 <ul>
                   <li>
                     Утилилзация CPU:
@@ -115,7 +105,11 @@ watch([groupStore, metricStore], () => {
 </template>
 
 <style scoped>
-tr:hover {
-  background-color: beige;
+tbody tr:hover {
+  background-color: #dcdcdc;
+  cursor: pointer;
+}
+.selected-node {
+  background-color: #dcdcdc;
 }
 </style>

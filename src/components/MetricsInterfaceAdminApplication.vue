@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useGroupStore } from '@/stores/groupStore'
 import { useMetricStore } from '@/stores/metricStore'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
 Chart.register(...registerables)
@@ -105,33 +105,27 @@ watch(metrics, () => {
   createChart()
 })
 
-// watch(metricStore, () => {})
-
 watch(
   () => groupStore.selectedNode,
   () => {
     createChart()
   },
 )
-
-// onMounted(async () => {
-//   createChart()
-// })
 </script>
 
 <template>
   <div class="content-block">
-    <div class="content-block-wrapper">
+    <div class="content-block-wrapper" style="overflow-y: auto; max-height: 100vh">
       <h1>Метрики</h1>
-      <div v-show="groupStore.selectedNode">
+      <div v-show="groupStore.selectedNode" class="p-20">
         <canvas ref="chartCanvas" style="height: 400px"></canvas>
       </div>
-      <div v-show="!groupStore.selectedNode">
+      <div v-show="!groupStore.selectedNode" class="p-20">
         <p>Для отображение метрик необходимо выбрать ноду</p>
       </div>
 
       <h1>Интерфейс</h1>
-      <div class="">
+      <div class="p-20">
         <table>
           <thead>
             <tr>
@@ -151,14 +145,16 @@ watch(
       </div>
 
       <h1>Администратор:</h1>
-      <div class="admin-info" v-for="(node, index) in nodes" :key="index">
+      <div class="admin-info p-20" v-for="(node, index) in nodes" :key="index">
         <label>{{ node.admin_lastname }}</label>
         <label>{{ node.admin_firstname }}</label>
         <a :href="`mailto:${node.admin_email}`">{{ node.admin_email }}</a>
       </div>
 
       <h1>Приложения:</h1>
-      <div v-for="(node, index) in nodes" :key="index">{{ node.application_caption }}</div>
+      <div class="p-20">
+        <div v-for="(node, index) in nodes" :key="index">{{ node.application_caption }}</div>
+      </div>
     </div>
   </div>
 </template>

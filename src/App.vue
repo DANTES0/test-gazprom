@@ -18,9 +18,6 @@ import MainView from './views/MainView.vue'
   height: 100vh;
   border-right: 1px solid black;
 }
-.content-block-wrapper {
-  padding: 20px;
-}
 
 .group-list {
   display: flex;
@@ -43,6 +40,9 @@ import MainView from './views/MainView.vue'
 
 h1 {
   font-size: 24px;
+  background-color: #0079c2;
+  padding: 20px;
+  color: white;
 }
 table {
   font-size: 20px;
@@ -50,17 +50,14 @@ table {
   text-align: center;
   border-spacing: 0 16px;
 }
-td {
-}
 tr {
   padding-top: 10px;
 }
-/* Стиль для второго столбца */
 td:nth-child(2) {
-  padding-left: 60px;
+  padding-left: 50px;
 }
 td:nth-child(3) {
-  padding-left: 60px;
+  padding-left: 50px;
 }
 
 ul {
@@ -70,5 +67,14 @@ li {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+}
+.p-20 {
+  padding: 20px;
+}
+.pl-20 {
+  padding-left: 20px;
+}
+.pr-20 {
+  padding-right: 20px;
 }
 </style>
