@@ -42,6 +42,27 @@ export const useGroupStore = defineStore('groups', () => {
     selectedNode.value = node
   }
 
+  let intervalId: number | null = null
+
+  const startPolling = (): void => {
+    if (intervalId !== null) return
+    intervalId = setInterval(async () => {
+      try {
+        await fetchGroups()
+        console.log('Метрики обновлены:', groups.value)
+      } catch (error) {
+        console.error('Ошибка при обновлении метрик:', error)
+      }
+    }, 60000)
+  }
+
+  const stopPolling = (): void => {
+    if (intervalId !== null) {
+      clearInterval(intervalId)
+      intervalId = null
+    }
+  }
+
   return {
     groups,
     loading,
@@ -53,5 +74,7 @@ export const useGroupStore = defineStore('groups', () => {
     setSelectedGroup,
     selectedNode,
     setSelectedNode,
+    startPolling,
+    stopPolling,
   }
 })

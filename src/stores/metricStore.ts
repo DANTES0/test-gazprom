@@ -46,6 +46,29 @@ export const useMetricStore = defineStore('metrics', () => {
     })
     return latestMetrics
   }
+
+  let intervalId: number | null = null
+
+  const startPolling = (): void => {
+    if (intervalId !== null) return
+
+    intervalId = setInterval(async () => {
+      try {
+        await fetchMetrics()
+        console.log('Метрики обновлены:', metrics.value)
+      } catch (error) {
+        console.error('Ошибка при обновлении метрик:', error)
+      }
+    }, 60000)
+  }
+
+  const stopPolling = (): void => {
+    if (intervalId !== null) {
+      clearInterval(intervalId)
+      intervalId = null
+    }
+  }
+
   return {
     metrics,
     loading,
@@ -54,5 +77,7 @@ export const useMetricStore = defineStore('metrics', () => {
     getMetricsByNodeId,
     getMetricsByNodeIds,
     getLatestMetricsByNodes,
+    startPolling,
+    stopPolling,
   }
 })
