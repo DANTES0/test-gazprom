@@ -39,15 +39,19 @@ const nodes = computed(() => {
   return []
 })
 
+watch(groupStore, () => {
+  uniqueGroups.value = groupStore.getUniqueGroups()
+})
+
 // watch(selectedGroup, () => {
 //   nodes.value = groupStore.getNodesByGroup(selectedGroup.value)
 // })
 
-onMounted(async () => {
-  await groupStore.fetchGroups()
-  uniqueGroups.value = groupStore.getUniqueGroups()
-  console.log(uniqueGroups)
-})
+// onMounted(async () => {
+//   // await groupStore.fetchGroups()
+//   uniqueGroups.value = groupStore.getUniqueGroups()
+//   console.log(uniqueGroups)
+// })
 </script>
 
 <template>

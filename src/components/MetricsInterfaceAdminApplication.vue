@@ -105,6 +105,8 @@ watch(metrics, () => {
   createChart()
 })
 
+// watch(metricStore, () => {})
+
 watch(
   () => groupStore.selectedNode,
   () => {
@@ -112,11 +114,9 @@ watch(
   },
 )
 
-onMounted(async () => {
-  await groupStore.fetchGroups()
-  await metricStore.fetchMetrics()
-  createChart()
-})
+// onMounted(async () => {
+//   createChart()
+// })
 </script>
 
 <template>
@@ -144,7 +144,7 @@ onMounted(async () => {
               <td :style="{ color: `${node.interface_status_color}` }">
                 {{ node.interface_status_description }}
               </td>
-              <td>{{ node.node_caption }}</td>
+              <td>{{ node.interface_caption }}</td>
             </tr>
           </tbody>
         </table>

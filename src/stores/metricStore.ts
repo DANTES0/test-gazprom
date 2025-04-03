@@ -59,7 +59,7 @@ export const useMetricStore = defineStore('metrics', () => {
       } catch (error) {
         console.error('Ошибка при обновлении метрик:', error)
       }
-    }, 60000)
+    }, 15000)
   }
 
   const stopPolling = (): void => {

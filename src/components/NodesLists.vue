@@ -3,7 +3,7 @@ import type { GroupType } from '@/Interfaces/groupType'
 import type { MetricType } from '@/Interfaces/metricType'
 import { useGroupStore } from '@/stores/groupStore'
 import { useMetricStore } from '@/stores/metricStore'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 const groupStore = useGroupStore()
 const metricStore = useMetricStore()
 
@@ -45,13 +45,18 @@ function getColor(metric: number): string {
   }
 }
 
-onMounted(async () => {
-  await metricStore.fetchMetrics()
-  await groupStore.fetchGroups()
+watch([groupStore, metricStore], () => {
   allNodes.value = groupStore.groups
   allMetrics.value = metricStore.metrics
-  console.log(allMetrics.value)
 })
+
+// onMounted(async () => {
+//   // await metricStore.fetchMetrics()
+//   // await groupStore.fetchGroups()
+//   allNodes.value = groupStore.groups
+//   allMetrics.value = metricStore.metrics
+//   console.log(allMetrics.value)
+// })
 </script>
 
 <template>
